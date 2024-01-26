@@ -51,7 +51,9 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+      $user=$this->userInterface->findById($id);
+      return view('admin.users.show',compact('user'));
+
     }
 
     /**
@@ -89,5 +91,22 @@ class UserController extends Controller
         $user = $this->userInterface->findById($id);
         Mail::to($user->email)->send(new MyTestMail($id));
         return redirect()->back();
+    }
+
+    public function createCertificate(string $id){
+        $user = $this->userInterface->findById($id);
+        return view('admin.users.certificate-create',compact('user'));
+    }
+
+    public function storeCertificate(string $id){
+        // $user = $this->userInterface->findById($id);
+        $this->userInterface->storeUserCertificate($id);
+        return redirect("superAdmin/users/$id");
+    }
+
+    public function showCertificate(string $id){
+        $user=$this->userInterface->findById($id);
+        return view('admin.users.show-certificate',compact('user'));
+
     }
 }

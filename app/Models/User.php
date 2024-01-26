@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -45,7 +46,13 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function userHasMemberType():BelongsTo{
-        return $this->belongsTo(UserMemberType::class,'user_member_type_id');
+    public function userHasMemberType(): BelongsTo
+    {
+        return $this->belongsTo(UserMemberType::class, 'user_member_type_id');
+    }
+
+    public function certificates(): HasMany
+    {
+        return $this->hasMany(UserCertificate::class);
     }
 }

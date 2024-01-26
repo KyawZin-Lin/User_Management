@@ -18,20 +18,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-Route::middleware('admin.guest')->group(function(){
+Route::auth();
+Route::middleware('admin.guest')->group(function () {
     // Login Routes
-Route::get('admin/login', [AdminLogInController::class, 'showLoginForm'])->name('login');
-Route::post('admin/login', [AdminLogInController::class, 'login']);
-
+    Route::get('admin/login', [AdminLogInController::class, 'showLoginForm'])->name('admin.login');
+    Route::post('admin/login', [AdminLogInController::class, 'login']);
 });
 
 
 Route::middleware(['admin.role:Super Admin'])->prefix('/superAdmin')->name('superAdmin.')->group(function () {
+    Route::get('/logout', [AdminLogInController::class, 'logout']);
 
-Route::resource('users',UserController::class);
-
-Route::get('users/send-email/{id}',[UserController::class,'sendEmail']);
+    Route::resource('users', UserController::class);
+    Route::get('users/send-email/{id}', [UserController::class, 'sendEmail']);
+    Route::get('users/certificate/{id}', [UserController::class, 'createCertificate']);
+    Route::post('users/certificate/{id}/create', [UserController::class, 'storeCertificate']);
+    Route::get('users/certificate/{id}/show', [UserController::class, 'showCertificate']);
 });
-
-

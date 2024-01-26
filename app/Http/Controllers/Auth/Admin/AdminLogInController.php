@@ -35,4 +35,11 @@ class AdminLogInController extends Controller
             'password' => 'required|string',
         ]);
     }
+
+    public function logout()
+    {
+        // dd(Auth::guard('admin'));
+        Auth::guard('admin')->logout();
+        return redirect(route('login'));
+    }
 }

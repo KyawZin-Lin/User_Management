@@ -4,6 +4,7 @@ namespace App\Repositories\admin;
 
 use App\Interfaces\admin\UserInterface;
 use App\Models\User;
+use App\Models\UserCertificate;
 use Illuminate\Support\Facades\Storage;
 
 class UserRepository implements UserInterface
@@ -104,9 +105,46 @@ class UserRepository implements UserInterface
 
     public function deleteUser(string $id)
     {
-        $user = $this->findById($id);
+        $user = User::with('certificates')->find($id);
+        if ($user->certificates->isNotEmpty()) {
+            foreach ($user->certificates as $certificate) {
+                // Check if the certificate image exists before deleting
+                if ($certificate->certificate_image) {
+                    $oldCertificateImage = $certificate->certificate_image;
+                    Storage::delete('public/user-certificate-image/' . $oldCertificateImage);
+                }
+            }
+            // Delete the user's certificates
+            $user->certificates()->delete();
+        }
         $oldImage = $user->user_image;
         Storage::delete('public/user-image/' . $oldImage);
         $user->delete();
+    }
+
+    private function storeCertificateImage()
+    {
+        if (request()->hasFile('certificate_image')) {
+            $image = request()->file('certificate_image');
+            $customFilename = 'user_certificate_image_' . time() . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('public/user-certificate-image', $customFilename);
+            return $customFilename;
+        } else {
+            return NULL;
+        }
+    }
+
+    public function storeUserCertificate(string $id)
+    {
+        // $user=$this->findById($id);
+        // dd(request()->all());
+        $userCertificate = new UserCertificate();
+        $userCertificate->user_id = $id;
+        $userCertificate->certificate_name = request()->certificate_name;
+        $userCertificate->issue_date = request()->issue_date;
+        $userCertificate->expiry_date = request()->expiry_date;
+        $userCertificate->description = request()->description;
+        $userCertificate->certificate_image = $this->storeCertificateImage(request()->certificate_image);
+        $userCertificate->save();
     }
 }

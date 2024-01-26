@@ -117,7 +117,7 @@
                   <p class="mb-0">Welcome back! Please enter your details.</p>
                 </div>
                 <div class="card-body">
-                  <form method="POST" action="{{ route('login') }}" role="form">
+                  <form method="POST" action="{{ route('admin.login') }}" role="form">
                     @csrf
 
                     <label>Email Address</label>

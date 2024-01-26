@@ -11,5 +11,6 @@ interface UserInterface
     public function updateValidation(string $id);
     public function update( string $id);
     public function deleteUser( string $id);
+    public function storeUserCertificate(string $id);
 
 }
