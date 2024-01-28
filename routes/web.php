@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\Admin\AdminLogInController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\User\UserLogInController;
 use App\Mail\MyTestMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -18,9 +19,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::auth();
+// Route::auth();
+
+//Admin Routes
 Route::middleware('admin.guest')->group(function () {
-    // Login Routes
+    Route::view('/', 'auth.login');
     Route::get('admin/login', [AdminLogInController::class, 'showLoginForm'])->name('admin.login');
     Route::post('admin/login', [AdminLogInController::class, 'login']);
 });
@@ -34,4 +37,17 @@ Route::middleware(['admin.role:Super Admin'])->prefix('/superAdmin')->name('supe
     Route::get('users/certificate/{id}', [UserController::class, 'createCertificate']);
     Route::post('users/certificate/{id}/create', [UserController::class, 'storeCertificate']);
     Route::get('users/certificate/{id}/show', [UserController::class, 'showCertificate']);
+});
+
+
+//User Routes
+Route::middleware('user.guest')->group(function () {
+    Route::get('/user/login', [UserLogInController::class, 'showUserLoginForm'])->name('user.login');
+    Route::post('/user/login', [UserLogInController::class, 'login']);
+});
+
+Route::middleware('user.auth')->prefix('user')->group(function () {
+   Route::get('/profile',function(){
+    dd('hi');
+   });
 });
