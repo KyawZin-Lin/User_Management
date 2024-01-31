@@ -4,7 +4,7 @@
     <div class="">
         <h3>User Create Form</h3>
     </div>
-    <form action="{{ url('admin/users') }}" method="POST" enctype="multipart/form-data" >
+    <form action="{{ url('superAdmin/users') }}" method="POST" enctype="multipart/form-data" >
         @csrf
         <div class="row">
             <div class="col-md-6">

@@ -19,9 +19,8 @@ class UserLogInController extends Controller
         $this->validateLogin($request);
         if (Auth::guard('user')->attempt(['email' => $request->email, 'password' => $request->password])) {
             // dd(auth()->guard('user')->user());
-                return redirect()->intended(RouteServiceProvider::USER_HOME);
-
-        }else{
+            return redirect()->intended(RouteServiceProvider::USER_HOME);
+        } else {
             // dd('hello');
             return redirect()->intended(route('user.login'));
         }
@@ -32,7 +31,14 @@ class UserLogInController extends Controller
         $request->validate([
             'email' => 'required|string',
             'password' => 'required|string',
-            'terms'=>'required'
+            'terms' => 'required'
         ]);
+    }
+
+    public function logout()
+    {
+        // dd(Auth::guard('admin'));
+        Auth::guard('user')->logout();
+        return redirect(route('user.login'));
     }
 }

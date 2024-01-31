@@ -4,7 +4,7 @@
             aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand d-flex align-items-center m-0"
             href=" https://demos.creative-tim.com/corporate-ui-dashboard/pages/dashboard.html " target="_blank">
-            <span class="font-weight-bold text-md">Super Admin Dashboard</span>
+            <span class="font-weight-bold text-lg">Admin Dashboard</span>
         </a>
     </div>
     <div class="collapse h-auto navbar-collapse px-4  w-auto " id="sidenav-collapse-main">
@@ -36,7 +36,7 @@
                 </a>
             </li> --}}
             <li class="nav-item">
-                <a class="nav-link  active" href="{{url('/superAdmin/users')}}">
+                <a class="nav-link  active" href="{{url('/admin/users')}}">
                     <div
                         class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">
                         <svg width="30px" height="30px" viewBox="0 0 48 48" version="1.1"
@@ -64,7 +64,7 @@
                     <span class="nav-link-text ms-1">Members</span>
                 </a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link  " href="../pages/wallet.html">
                     <div
                         class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">
@@ -112,7 +112,7 @@
                     </div>
                     <span class="nav-link-text ms-1">RTL</span>
                 </a>
-            </li>
+            </li> --}}
             {{-- <li class="nav-item mt-2">
                 <div class="d-flex align-items-center nav-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="ms-2"

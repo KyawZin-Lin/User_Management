@@ -22,6 +22,10 @@ class RedirectIfAdminAuthenticated
 
             return redirect(RouteServiceProvider::SUPER_ADMIN_HOME);
         }
+        if(Auth::guard('admin')->check() && Auth::guard('admin')->user()->isAdmin()) {
+
+            return redirect(RouteServiceProvider::ADMIN_HOME);
+        }
         // if(Auth::guard('admin')->check() && Auth::guard('admin')->user()->isSuperAdmin()) {
         //     dd('hello');
         //     return redirect(RouteServiceProvider::SUPER_ADMIN_HOME);

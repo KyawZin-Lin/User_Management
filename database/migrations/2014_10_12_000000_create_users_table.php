@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('address');
             $table->date('birthday');
             $table->string('user_image')->nullable();
-            $table->string('user_certificate_image')->nullable();
+            $table->string('user_status')->nullable()->default(config('constant.user.status.pending'));
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

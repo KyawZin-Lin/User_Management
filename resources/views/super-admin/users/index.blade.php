@@ -1,4 +1,4 @@
-@extends('admin-layouts.master')
+@extends('layouts.master')
 @section('content')
     {{-- <div class="row">
     <div class="col-12">
@@ -40,7 +40,7 @@
                             <button type="button" class="btn btn-sm btn-white me-2">
                                 View all
                             </button>
-                            <a href="{{ url('admin/users/create') }}"
+                            <a href="{{ url('superAdmin/users/create') }}"
                                 class="btn btn-sm btn-dark btn-icon d-flex align-items-center me-2">
                                 <span class="btn-inner--icon">
                                     <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"

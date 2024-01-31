@@ -27,7 +27,10 @@ class Admin extends Authenticatable
     }
     public function isSuperAdmin()
     {
-        // dd(in_array('SuperAdmin', $this->roles()->pluck('name')->toArray()));
         return in_array('Super Admin', $this->roles()->pluck('name')->toArray());
+    }
+    public function isAdmin()
+    {
+        return in_array('Admin', $this->roles()->pluck('name')->toArray());
     }
 }

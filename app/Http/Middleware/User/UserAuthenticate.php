@@ -18,6 +18,8 @@ class UserAuthenticate
     {
         if (Auth::guard('user')->check()) {
             return $next($request);
+        }else{
+            return redirect(route('user.login'));
         }
     }
 }

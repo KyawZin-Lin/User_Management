@@ -49,6 +49,17 @@ class UserRepository implements UserInterface
         $user->phone = request()->phone;
         $user->address = request()->address;
         $user->password = request()->password;
+        if(auth()->guard('admin')->user()->isSuperAdmin()){
+            $user->user_status =config('constant.user.status.superAdminApproved');
+        }else if(auth()->guard('admin')->user()->isAdmin()){
+            // dd('hi');
+            $user->user_status =config('constant.user.status.adminApproved');
+
+        }else{
+            $user->user_status =config('constant.user.status.pending');
+        }
+
+
         $user->user_image = $this->storeImage(request()->image);
         $user->save();
     }

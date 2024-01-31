@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\admin\UserInterface;
@@ -24,7 +24,7 @@ class UserController extends Controller
     public function index()
     {
         $users = $this->userInterface->paginate();
-        return view('admin.users.index', compact('users'));
+        return view('super-admin.users.index', compact('users'));
     }
 
     /**
@@ -33,7 +33,7 @@ class UserController extends Controller
     public function create()
     {
         $memberTypes = UserMemberType::all();
-        return view('admin.users.create', compact('memberTypes'));
+        return view('super-admin.users.create', compact('memberTypes'));
     }
 
     /**
@@ -43,7 +43,7 @@ class UserController extends Controller
     {
         $this->userInterface->storeValidation();
         $this->userInterface->store();
-        return redirect('admin/users');
+        return redirect('superAdmin/users');
     }
 
     /**
@@ -51,8 +51,9 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user = $this->userInterface->findById($id);
-        return view('admin.users.show', compact('user'));
+      $user=$this->userInterface->findById($id);
+      return view('super-admin.users.show',compact('user'));
+
     }
 
     /**
@@ -62,7 +63,7 @@ class UserController extends Controller
     {
         $user = $this->userInterface->findById($id);
         $memberTypes = UserMemberType::all();
-        return view('admin.users.edit', compact('user', 'memberTypes'));
+        return view('super-admin.users.edit', compact('user', 'memberTypes'));
     }
 
     /**
@@ -72,7 +73,7 @@ class UserController extends Controller
     {
         $this->userInterface->updateValidation($id);
         $this->userInterface->update($id);
-        return redirect('admin/users');
+        return redirect('superAdmin/users');
     }
 
     /**
@@ -81,7 +82,7 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         $this->userInterface->deleteUser($id);
-        return redirect('admin/users');
+        return redirect('superAdmin/users');
     }
 
 
@@ -92,22 +93,20 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function createCertificate(string $id)
-    {
+    public function createCertificate(string $id){
         $user = $this->userInterface->findById($id);
-        return view('admin.users.certificate-create', compact('user'));
+        return view('super-admin.users.certificate-create',compact('user'));
     }
 
-    public function storeCertificate(string $id)
-    {
+    public function storeCertificate(string $id){
         // $user = $this->userInterface->findById($id);
         $this->userInterface->storeUserCertificate($id);
-        return redirect("admin/users/$id");
+        return redirect("superAdmin/users/$id");
     }
 
-    public function showCertificate(string $id)
-    {
-        $user = $this->userInterface->findById($id);
-        return view('admin.users.show-certificate', compact('user'));
+    public function showCertificate(string $id){
+        $user=$this->userInterface->findById($id);
+        return view('super-admin.users.show-certificate',compact('user'));
+
     }
 }
