@@ -18,6 +18,6 @@ class UserController extends Controller
     }
     public function profile(){
         $user=$this->userInterface->getAuthUser();
-        return view('user.layouts.master');
+        return view('user.profile.index',compact('user'));
     }
 }

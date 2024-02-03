@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,10 +14,16 @@ class UserLogInController extends Controller
     {
         return view('auth.user.login');
     }
+
+    public function showUserRegisterForm()
+    {
+        return view('auth.user.register');
+    }
     public function login(Request $request)
     {
         // dd(request()->all());
         $this->validateLogin($request);
+        // dd('success');
         if (Auth::guard('user')->attempt(['email' => $request->email, 'password' => $request->password])) {
             // dd(auth()->guard('user')->user());
             return redirect()->intended(RouteServiceProvider::USER_HOME);
@@ -26,12 +33,37 @@ class UserLogInController extends Controller
         }
     }
 
+    public function register(Request $request)
+    {
+        $this->validateRegister($request);
+        $user = new User();
+        $user->name = request()->name;
+        $user->email = request()->email;
+        $user->password = request()->password;
+        $user->phone = request()->phone;
+        $user->address = request()->address;
+        $user->birthday = request()->birthday;
+        $user->save();
+        return redirect()->intended(route('user.login'));
+    }
+
     protected function validateLogin(Request $request)
     {
         $request->validate([
             'email' => 'required|string',
             'password' => 'required|string',
             'terms' => 'required'
+        ]);
+    }
+    protected function validateRegister(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|string',
+            'password' => 'required|string',
+            'terms' => 'required',
+            'phone' => 'required',
+            'address' => 'required|string',
+            'birthday' => 'required|date',
         ]);
     }
 

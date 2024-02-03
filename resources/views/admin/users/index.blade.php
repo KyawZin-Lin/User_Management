@@ -58,14 +58,17 @@
                     <div class="border-bottom py-3 px-3 d-sm-flex align-items-center">
                         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                             <input type="radio" class="btn-check" name="btnradiotable" id="btnradiotable1"
-                                autocomplete="off" checked>
-                            <label class="btn btn-white px-3 mb-0" for="btnradiotable1">All</label>
+                                autocomplete="off">
+                            <a href="{{url('admin/users')}}" class="btn btn-white px-3 mb-0" for="btnradiotable1">All</a href="{{url('admin/users')}}">
                             <input type="radio" class="btn-check" name="btnradiotable" id="btnradiotable2"
                                 autocomplete="off">
-                            <label class="btn btn-white px-3 mb-0" for="btnradiotable2">Monitored</label>
+                            <a href="{{url('admin/users?user_status=pending_user')}}" class="btn btn-white px-3 mb-0" for="btnradiotable2">Pending Member</a>
                             <input type="radio" class="btn-check" name="btnradiotable" id="btnradiotable3"
                                 autocomplete="off">
-                            <label class="btn btn-white px-3 mb-0" for="btnradiotable3">Unmonitored</label>
+                            <a href="{{url('admin/users?user_status=admin_approved_user')}}" class="btn btn-white px-3 mb-0" for="btnradiotable3">Admin Approved Member</a>
+                            <input type="radio" class="btn-check" name="btnradiotable" id="btnradiotable3"
+                                autocomplete="off">
+                            <a href="{{url('admin/users?user_status=superAdmin_approved_user')}}" class="btn btn-white px-3 mb-0" for="btnradiotable3">SuperAdmin Approved Member</a>
                         </div>
                         <div class="input-group w-sm-25 ms-auto">
                             <span class="input-group-text text-body">
@@ -87,8 +90,10 @@
                                     </th>
                                     <th class="text-secondary text-xs font-weight-semibold opacity-7 ps-2">
                                         Member Type</th>
+                                    <th class="text-secondary text-xs font-weight-semibold opacity-7 ps-2">
+                                        Membership Expiry</th>
                                     <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">
-                                       User Status</th>
+                                        User Status</th>
                                     <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">
                                         Birthday</th>
                                     <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">
@@ -128,12 +133,24 @@
                                                 {{ $user->userHasMemberType->name }}</p>
                                             {{-- <p class="text-sm text-secondary mb-0">Organization</p> --}}
                                         </td>
-                                        <td class="align-middle text-center text-sm">
+                                        <td class="align-middle text-center">
                                             <span
-                                                class="badge badge-sm border border-success text-success bg-success">{{$user->user_status}}</span>
+                                                class="text-secondary text-sm font-weight-normal"><b>{{ $user->membership_expiry }}</b></span>
+                                        </td>
+                                        <td class="align-middle text-center text-sm">
+                                            <div class="col-md-4">
+
+                                                @include('components.partials.admin-approve-model-box')
+                                                <button type="button" @if ($user->user_status == 'admin_approved_user' || $user->user_status == 'superAdmin_approved_user') disabled @endif
+                                                    class="btn btn-sm btn-block btn-dark mb-3" data-bs-toggle="modal"
+                                                    data-bs-target="{{"#admin-approve-model-$user->id"}}">{{ $user->user_status }}</button>
+
+                                            </div>
+                                            {{-- <span> <a class=" btn badge badge-sm border border-success text-success bg-success" href="{{url("admin/user/$user->id/approve")}}"> {{ $user->user_status }}</a></span> --}}
                                         </td>
                                         <td class="align-middle text-center">
-                                            <span class="text-secondary text-sm font-weight-normal">{{$user->birthday}}</span>
+                                            <span
+                                                class="text-secondary text-sm font-weight-normal">{{ $user->birthday }}</span>
                                         </td>
                                         <td class="align-middle text-center">
                                             <span
@@ -145,15 +162,15 @@
                                         </td>
 
                                         <td class="d-flex gap-2">
-                                            <a href="{{ url("superAdmin/users/send-email/$user->id") }}"
+                                            <a href="{{ url("admin/users/send-email/$user->id") }}"
                                                 class="btn btn-sm btn-info">
                                                 Send Email
                                             </a>
-                                            <a href="{{ url("superAdmin/users/certificate/$user->id") }}"
+                                            <a href="{{ url("admin/users/certificate/$user->id") }}"
                                                 class="btn btn-sm btn-info">
                                                 User Certificate
                                             </a>
-                                            <a class="btn btn-sm" href="{{ url("superAdmin/users/$user->id/edit") }}"
+                                            <a class="btn btn-sm" href="{{ url("admin/users/$user->id/edit") }}"
                                                 class="text-secondary font-weight-bold text-xs" data-bs-toggle="tooltip"
                                                 data-bs-title="Edit user">
                                                 <svg width="14" height="14" viewBox="0 0 15 16" fill="none"
@@ -163,7 +180,7 @@
                                                         fill="#64748B" />
                                                 </svg>
                                             </a>
-                                            <a class="btn btn-sm" href="{{ url("superAdmin/users/$user->id") }}"
+                                            <a class="btn btn-sm" href="{{ url("admin/users/$user->id") }}"
                                                 class="text-secondary font-weight-bold text-xs" data-bs-toggle="tooltip"
                                                 data-bs-title="Show User">
                                                 <svg width="14" height="14" xmlns="http://www.w3.org/2000/svg"
@@ -172,7 +189,7 @@
                                                         d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z" />
                                                 </svg>
                                             </a>
-                                            <form method="POST" action="{{ url("superAdmin/users/$user->id") }}">
+                                            <form method="POST" action="{{ url("admin/users/$user->id") }}">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger btn-icon px-3 me-2">

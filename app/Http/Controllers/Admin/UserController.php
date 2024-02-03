@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Interfaces\admin\UserInterface;
 use App\Mail\MyTestMail;
+use App\Models\User;
 use App\Models\UserMemberType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -109,5 +110,14 @@ class UserController extends Controller
     {
         $user = $this->userInterface->findById($id);
         return view('admin.users.show-certificate', compact('user'));
+    }
+
+    public function adminApprove(string $id){
+        // dd($id);
+        $user=User::findOrFail($id);
+        $user->user_status= config('constant.user.status.adminApproved');
+        $user->update();
+        return redirect()->back();
+
     }
 }

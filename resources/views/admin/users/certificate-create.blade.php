@@ -3,7 +3,7 @@
     <div class="">
         <h3>User Certificate Create Form</h3>
     </div>
-    <form action="{{ url("superAdmin/users/certificate/$user->id/create") }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ url("admin/users/certificate/$user->id/create") }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-md-6">

@@ -11,7 +11,14 @@ class UserRepository implements UserInterface
 {
     public function paginate()
     {
-        return User::paginate(20);
+        $userQuery=User::query();
+        $status=request()->user_status;
+        // dd($status);
+        if($status){
+            $userQuery->where('user_status',$status);
+        }
+        $users=$userQuery->paginate(20);
+        return $users;
     }
 
     public function storeValidation()
@@ -40,7 +47,8 @@ class UserRepository implements UserInterface
 
     public function store()
     {
-
+        $membershipDuration = now()->addMonths(3)->format('Y-m-d'); // 3 months membership duration as default
+        // dd($membershipDuration);
         $user = new User();
         $user->name = request()->name;
         $user->email = request()->email;
@@ -49,14 +57,14 @@ class UserRepository implements UserInterface
         $user->phone = request()->phone;
         $user->address = request()->address;
         $user->password = request()->password;
-        if(auth()->guard('admin')->user()->isSuperAdmin()){
-            $user->user_status =config('constant.user.status.superAdminApproved');
-        }else if(auth()->guard('admin')->user()->isAdmin()){
+        $user->membership_expiry=$membershipDuration;
+        if (auth()->guard('admin')->user()->isSuperAdmin()) {
+            $user->user_status = config('constant.user.status.superAdminApproved');
+        } else if (auth()->guard('admin')->user()->isAdmin()) {
             // dd('hi');
-            $user->user_status =config('constant.user.status.adminApproved');
-
-        }else{
-            $user->user_status =config('constant.user.status.pending');
+            $user->user_status = config('constant.user.status.adminApproved');
+        } else {
+            $user->user_status = config('constant.user.status.pending');
         }
 
 
@@ -84,11 +92,12 @@ class UserRepository implements UserInterface
     {
         $user = $this->findById($id);
         if (request()->hasFile('image')) {
+            $oldImage = $user->user_image;
+            // dd($oldImage);
             $image = request()->file('image');
             $customFilename = 'user_image_' . time() . '.' . $image->getClientOriginalExtension();
             $image->storeAs('public/user-image', $customFilename);
 
-            $oldImage = $user->user_image;
             Storage::delete('public/user-image/' . $oldImage);
             return $customFilename;
         } else {
@@ -110,7 +119,11 @@ class UserRepository implements UserInterface
         } else {
             $user->password = $user->password;
         }
-        $user->user_image = $this->uploadImage($id, request()->image);
+        // dd('hi');
+        if (request()->hasFile('image')) {
+            // dd('hello');
+            $user->user_image = $this->uploadImage($id, request()->image);
+        }
         $user->update();
     }
 

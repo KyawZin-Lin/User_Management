@@ -5,7 +5,9 @@ namespace App\Http\Controllers\SuperAdmin;
 use App\Http\Controllers\Controller;
 use App\Interfaces\admin\UserInterface;
 use App\Mail\MyTestMail;
+use App\Models\User;
 use App\Models\UserMemberType;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -51,9 +53,8 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-      $user=$this->userInterface->findById($id);
-      return view('super-admin.users.show',compact('user'));
-
+        $user = $this->userInterface->findById($id);
+        return view('super-admin.users.show', compact('user'));
     }
 
     /**
@@ -93,20 +94,43 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function createCertificate(string $id){
+    public function createCertificate(string $id)
+    {
         $user = $this->userInterface->findById($id);
-        return view('super-admin.users.certificate-create',compact('user'));
+        return view('super-admin.users.certificate-create', compact('user'));
     }
 
-    public function storeCertificate(string $id){
+    public function storeCertificate(string $id)
+    {
         // $user = $this->userInterface->findById($id);
         $this->userInterface->storeUserCertificate($id);
         return redirect("superAdmin/users/$id");
     }
 
-    public function showCertificate(string $id){
-        $user=$this->userInterface->findById($id);
-        return view('super-admin.users.show-certificate',compact('user'));
+    public function showCertificate(string $id)
+    {
+        $user = $this->userInterface->findById($id);
+        return view('super-admin.users.show-certificate', compact('user'));
+    }
 
+    public function superAdminApprove(string $id)
+    {
+        $user = $this->userInterface->findById($id);
+        $user->user_status = config('constant.user.status.superAdminApproved');
+        $user->update();
+        return redirect()->back();
+        // dd($user);
+    }
+
+    public function superAdminMembershipAdd(string $id)
+    {
+        $user = $this->userInterface->findById($id);
+        // Calculate the new membership expiry by adding the new duration to the current expiry
+        // Convert the membership expiry to a DateTime instance
+        $currentExpiry = Carbon::parse($user->membership_expiry);
+        $newExpiry = $currentExpiry->addMonths(request()->new_member_expiry);
+        $user->membership_expiry = $newExpiry;
+        $user->update();
+        return redirect()->back();
     }
 }

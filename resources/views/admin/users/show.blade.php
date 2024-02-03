@@ -27,8 +27,8 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3 text-sm-end">
-                    <a href="{{url('superAdmin/users')}}" class="btn btn-sm btn-white">Back</a>
-                    <a href="{{url("superAdmin/users/certificate/$user->id/show")}}" class="btn btn-sm btn-dark">User Certificate</a>
+                    <a href="{{url('admin/users')}}" class="btn btn-sm btn-white">Back</a>
+                    <a href="{{url("admin/users/certificate/$user->id/show")}}" class="btn btn-sm btn-dark">User Certificate</a>
                 </div>
             </div>
         </div>

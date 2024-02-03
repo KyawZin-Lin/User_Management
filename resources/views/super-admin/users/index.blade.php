@@ -58,14 +58,17 @@
                     <div class="border-bottom py-3 px-3 d-sm-flex align-items-center">
                         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                             <input type="radio" class="btn-check" name="btnradiotable" id="btnradiotable1"
-                                autocomplete="off" checked>
-                            <label class="btn btn-white px-3 mb-0" for="btnradiotable1">All</label>
-                            <input type="radio" class="btn-check" name="btnradiotable" id="btnradiotable2"
-                                autocomplete="off">
-                            <label class="btn btn-white px-3 mb-0" for="btnradiotable2">Monitored</label>
-                            <input type="radio" class="btn-check" name="btnradiotable" id="btnradiotable3"
-                                autocomplete="off">
-                            <label class="btn btn-white px-3 mb-0" for="btnradiotable3">Unmonitored</label>
+                            autocomplete="off">
+                        <a href="{{url('superAdmin/users')}}" class="btn btn-white px-3 mb-0" for="btnradiotable1">All</a>
+                        <input type="radio" class="btn-check" name="btnradiotable" id="btnradiotable2"
+                            autocomplete="off">
+                        <a href="{{url('superAdmin/users?user_status=pending_user')}}" class="btn btn-white px-3 mb-0" for="btnradiotable2">Pending Member</a>
+                        <input type="radio" class="btn-check" name="btnradiotable" id="btnradiotable3"
+                            autocomplete="off">
+                        <a href="{{url('superAdmin/users?user_status=admin_approved_user')}}" class="btn btn-white px-3 mb-0" for="btnradiotable3">Admin Approved Member</a>
+                        <input type="radio" class="btn-check" name="btnradiotable" id="btnradiotable3"
+                            autocomplete="off">
+                        <a href="{{url('superAdmin/users?user_status=superAdmin_approved_user')}}" class="btn btn-white px-3 mb-0" for="btnradiotable3">SuperAdmin Approved Member</a>
                         </div>
                         <div class="input-group w-sm-25 ms-auto">
                             <span class="input-group-text text-body">
@@ -87,8 +90,10 @@
                                     </th>
                                     <th class="text-secondary text-xs font-weight-semibold opacity-7 ps-2">
                                         Member Type</th>
+                                    <th class="text-secondary text-xs font-weight-semibold opacity-7 ps-2">
+                                        Membership Expiry</th>
                                     <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">
-                                       User Status</th>
+                                        User Status</th>
                                     <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">
                                         Birthday</th>
                                     <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">
@@ -124,16 +129,37 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <p class="text-sm text-dark font-weight-semibold mb-0">
-                                                {{ $user->userHasMemberType->name }}</p>
+                                            <div class="col-md-4">
+                                                @include('components.partials.membership-model-box')
+                                                <button type="button" class="btn btn-sm btn-block btn-white mb-3"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="{{"#membership-model-box-$user->id"}}">{{ $user->userHasMemberType->name }}</button>
+
+                                            </div>
+
+                                            {{-- <p class="text-sm text-dark font-weight-semibold mb-0">
+                                                {{ $user->userHasMemberType->name }}</p> --}}
                                             {{-- <p class="text-sm text-secondary mb-0">Organization</p> --}}
                                         </td>
-                                        <td class="align-middle text-center text-sm">
+                                        <td class="align-middle text-center">
                                             <span
-                                                class="badge badge-sm border border-success text-success bg-success">{{$user->user_status}}</span>
+                                                class="text-secondary text-sm font-weight-normal"><b>{{ $user->membership_expiry }}</b></span>
+                                        </td>
+                                        <td class="align-middle text-center text-sm">
+                                            <div class="col-md-4">
+
+                                                @include('components.partials.super-admin-approve-model-box')
+                                                <button type="button" @if ($user->user_status == 'superAdmin_approved_user') disabled @endif
+                                                    class="btn btn-sm btn-block btn-dark mb-3" data-bs-toggle="modal"
+                                                    data-bs-target="{{"#super-admin-approve-model-$user->id"}}">{{ $user->user_status }}</button>
+
+                                            </div>
+                                            {{-- <span
+                                                class="badge badge-sm border border-success text-success bg-success">{{$user->user_status}}</span> --}}
                                         </td>
                                         <td class="align-middle text-center">
-                                            <span class="text-secondary text-sm font-weight-normal">{{$user->birthday}}</span>
+                                            <span
+                                                class="text-secondary text-sm font-weight-normal">{{ $user->birthday }}</span>
                                         </td>
                                         <td class="align-middle text-center">
                                             <span
@@ -207,7 +233,7 @@
                             @if ($users->nextPageUrl())
                                 <a href="{{ $users->nextPageUrl() }}" class="btn btn-sm btn-white mb-0">Next</a>
                             @endif --}}
-                            {{ $users }}
+                            {{ $users->withQueryString()->links() }}
                         </div>
                     </div>
                 </div>

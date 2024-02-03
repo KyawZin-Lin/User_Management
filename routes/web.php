@@ -37,6 +37,10 @@ Route::middleware(['admin.role:Super Admin'])->prefix('/superAdmin')->name('supe
     Route::get('users/certificate/{id}', [UserController::class, 'createCertificate']);
     Route::post('users/certificate/{id}/create', [UserController::class, 'storeCertificate']);
     Route::get('users/certificate/{id}/show', [UserController::class, 'showCertificate']);
+    Route::get('user/{id}/approve',[UserController::class,'superAdminApprove']);
+    Route::post('user/{id}/membership/add',[UserController::class,'superAdminMembershipAdd']);
+
+
 });
 
 
@@ -45,10 +49,11 @@ Route::middleware(['admin.role:Admin'])->prefix('/admin')->name('admin.')->group
     Route::get('/logout', [AdminLogInController::class, 'logout']);
 
     Route::resource('users', AdminUserController::class);
-    // Route::get('users/send-email/{id}', [UserController::class, 'sendEmail']);
-    // Route::get('users/certificate/{id}', [UserController::class, 'createCertificate']);
-    // Route::post('users/certificate/{id}/create', [UserController::class, 'storeCertificate']);
-    // Route::get('users/certificate/{id}/show', [UserController::class, 'showCertificate']);
+    Route::get('users/send-email/{id}', [AdminUserController::class, 'sendEmail']);
+    Route::get('users/certificate/{id}', [AdminUserController::class, 'createCertificate']);
+    Route::post('users/certificate/{id}/create', [AdminUserController::class, 'storeCertificate']);
+    Route::get('users/certificate/{id}/show', [AdminUserController::class, 'showCertificate']);
+    Route::get('user/{id}/approve',[AdminUserController::class,'adminApprove']);
 });
 
 
@@ -56,6 +61,9 @@ Route::middleware(['admin.role:Admin'])->prefix('/admin')->name('admin.')->group
 Route::middleware('user.guest')->group(function () {
     Route::get('/user/login', [UserLogInController::class, 'showUserLoginForm'])->name('user.login');
     Route::post('/user/login', [UserLogInController::class, 'login']);
+    Route::get('/user/register',[UserLogInController::class, 'showUserRegisterForm'])->name('user.register');
+    Route::post('/user/register', [UserLogInController::class, 'register']);
+
 });
 
 Route::middleware('user.auth')->prefix('user')->group(function () {

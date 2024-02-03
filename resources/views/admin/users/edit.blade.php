@@ -4,7 +4,7 @@
     <div class="">
         <h3>User Edit Form</h3>
     </div>
-    <form action="{{ url("superAdmin/users/$user->id") }}" method="POST" enctype="multipart/form-data" >
+    <form action="{{ url("admin/users/$user->id") }}" method="POST" enctype="multipart/form-data" >
         @csrf
         @method('PUT')
         <div class="row">

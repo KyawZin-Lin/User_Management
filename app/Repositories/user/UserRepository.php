@@ -8,6 +8,6 @@ use Illuminate\Support\Facades\Auth;
 class UserRepository implements UserInterface{
     public function getAuthUser()
     {
-        return Auth::guard('user');
+        return Auth::guard('user')->user();
     }
 }

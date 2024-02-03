@@ -48,7 +48,7 @@ class AdminLogInController extends Controller
         // ]);
      return   $validator = Validator::make($request->all(), [
             'email'   => 'required|email|exists:admins,email',
-            'password' => 'required|confirmed|min:6'
+            'password' => 'required|min:6'
         ]);
     }
 

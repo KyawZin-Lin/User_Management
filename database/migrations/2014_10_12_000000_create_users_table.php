@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('user_member_type_id');
+            $table->foreignId('user_member_type_id')->default(1);
             $table->string('phone');
             $table->string('address');
             $table->date('birthday');
             $table->string('user_image')->nullable();
             $table->string('user_status')->nullable()->default(config('constant.user.status.pending'));
+            $table->date('membership_expiry')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

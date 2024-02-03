@@ -54,7 +54,7 @@
                     </div>
                     <div class="col-md-5 col-10 folat-end">
                         <h6 class="mb-0 font-weight-semibold text-lg">Profile information</h6>
-                        <p class="text-sm mb-1">Edit the information about you.</p>
+                        <p class="text-sm mb-1">Membership Due Date : <b>{{$user->membership_expiry}}</b></p>
                     </div>
                 </div>
             </div>

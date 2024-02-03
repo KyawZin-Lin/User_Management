@@ -25,6 +25,8 @@ class CheckAdminRole
                 // dd('hi',$role);
                 if ($role == 'Super Admin')
                     return redirect(route('admin.login'));
+                if ($role == 'Admin')
+                    return redirect(route('admin.login'));
             }
         } else {
             return $next($request);
