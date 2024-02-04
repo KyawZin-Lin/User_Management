@@ -315,6 +315,10 @@
                                 <div class="barcode">
                                     {!! DNS2D::getBarcodeHTML("UserName : $user->name and Contact : $user->phone", 'QRCODE', 4, 4) !!}
                                 </div>
+                                <br>
+                                <div class="">
+                                   <b> <span>User Member Type</span> : <span>{{$user->userHasMemberType->name}}</span></b>
+                                </div>
                             </div>
                         </div>
                     </div>

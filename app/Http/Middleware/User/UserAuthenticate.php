@@ -16,6 +16,7 @@ class UserAuthenticate
      */
     public function handle(Request $request, Closure $next): Response
     {
+
         if (Auth::guard('user')->check()) {
             return $next($request);
         }else{

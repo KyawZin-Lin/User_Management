@@ -3,7 +3,7 @@
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\SuperAdmin\UserController;
 use App\Http\Controllers\Auth\Admin\AdminLogInController;
-
+use App\Http\Controllers\Auth\User\GoogleLoginController;
 use App\Http\Controllers\Auth\User\UserLogInController;
 use App\Http\Controllers\User\UserController as UserUserController;
 use Illuminate\Support\Facades\Route;
@@ -37,10 +37,8 @@ Route::middleware(['admin.role:Super Admin'])->prefix('/superAdmin')->name('supe
     Route::get('users/certificate/{id}', [UserController::class, 'createCertificate']);
     Route::post('users/certificate/{id}/create', [UserController::class, 'storeCertificate']);
     Route::get('users/certificate/{id}/show', [UserController::class, 'showCertificate']);
-    Route::get('user/{id}/approve',[UserController::class,'superAdminApprove']);
-    Route::post('user/{id}/membership/add',[UserController::class,'superAdminMembershipAdd']);
-
-
+    Route::get('user/{id}/approve', [UserController::class, 'superAdminApprove']);
+    Route::post('user/{id}/membership/add', [UserController::class, 'superAdminMembershipAdd']);
 });
 
 
@@ -53,7 +51,7 @@ Route::middleware(['admin.role:Admin'])->prefix('/admin')->name('admin.')->group
     Route::get('users/certificate/{id}', [AdminUserController::class, 'createCertificate']);
     Route::post('users/certificate/{id}/create', [AdminUserController::class, 'storeCertificate']);
     Route::get('users/certificate/{id}/show', [AdminUserController::class, 'showCertificate']);
-    Route::get('user/{id}/approve',[AdminUserController::class,'adminApprove']);
+    Route::get('user/{id}/approve', [AdminUserController::class, 'adminApprove']);
 });
 
 
@@ -61,9 +59,8 @@ Route::middleware(['admin.role:Admin'])->prefix('/admin')->name('admin.')->group
 Route::middleware('user.guest')->group(function () {
     Route::get('/user/login', [UserLogInController::class, 'showUserLoginForm'])->name('user.login');
     Route::post('/user/login', [UserLogInController::class, 'login']);
-    Route::get('/user/register',[UserLogInController::class, 'showUserRegisterForm'])->name('user.register');
+    Route::get('/user/register', [UserLogInController::class, 'showUserRegisterForm'])->name('user.register');
     Route::post('/user/register', [UserLogInController::class, 'register']);
-
 });
 
 Route::middleware('user.auth')->prefix('user')->group(function () {
@@ -71,3 +68,8 @@ Route::middleware('user.auth')->prefix('user')->group(function () {
 
     Route::get('/profile', [UserUserController::class, 'profile']);
 });
+
+
+// GoogleLoginController redirect and callback urls
+Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('/login/google/callback', [GoogleLoginController::class, 'handleGoogleCallback']);

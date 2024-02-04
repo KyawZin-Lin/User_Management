@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('user_member_type_id')->default(1);
-            $table->string('phone');
-            $table->string('address');
-            $table->date('birthday');
+            $table->string('google_id')->nullable()->unique();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->date('birthday')->nullable();
             $table->string('user_image')->nullable();
             $table->string('user_status')->nullable()->default(config('constant.user.status.pending'));
             $table->date('membership_expiry')->nullable();

@@ -21,11 +21,11 @@ class UserLogInController extends Controller
     }
     public function login(Request $request)
     {
-        // dd(request()->all());
+
         $this->validateLogin($request);
-        // dd('success');
+
         if (Auth::guard('user')->attempt(['email' => $request->email, 'password' => $request->password])) {
-            // dd(auth()->guard('user')->user());
+
             return redirect()->intended(RouteServiceProvider::USER_HOME);
         } else {
             // dd('hello');
@@ -69,7 +69,7 @@ class UserLogInController extends Controller
 
     public function logout()
     {
-        // dd(Auth::guard('admin'));
+
         Auth::guard('user')->logout();
         return redirect(route('user.login'));
     }

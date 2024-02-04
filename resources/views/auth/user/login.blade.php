@@ -118,12 +118,12 @@
                                     </a>
                                 </li>
                             </ul>
-                            <ul class="navbar-nav d-lg-block d-none">
+                            {{-- <ul class="navbar-nav d-lg-block d-none">
                                 <li class="nav-item">
                                     <a href="https://www.creative-tim.com/product/corporate-ui-dashboard"
                                         class="btn btn-sm mb-0 bg-gradient-dark">Free download</a>
                                 </li>
-                            </ul>
+                            </ul> --}}
                         </div>
                     </div>
                 </nav>
@@ -221,20 +221,28 @@
                                         <div class="text-center">
                                             <button type="submit" class="btn btn-dark w-100 mt-4 mb-3">Sign
                                                 In</button>
-                                            <button type="button" class="btn btn-white btn-icon w-100 mb-3">
+                                            {{-- <button type="button" class="btn btn-white btn-icon w-100 mb-3">
                                                 <span class="btn-inner--icon me-1">
                                                     <img class="w-5" src="../assets/img/logos/google-logo.svg"
                                                         alt="google-logo" />
                                                 </span>
                                                 <span class="btn-inner--text">Sign up with Google</span>
-                                            </button>
+                                            </button> --}}
+                                            <a href="{{url('login/google ')}}" class="btn btn-white btn-icon w-100 mb-3">
+                                                <span class="btn-inner--icon me-1">
+                                                    <img class="w-5" src="../assets/img/logos/google-logo.svg"
+                                                        alt="google-logo" />
+                                                </span>
+                                                <span class="btn-inner--text">Sign up with Google</span>
+                                            </a>
                                         </div>
                                     </form>
                                 </div>
                                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                     <p class="mb-4 text-xs mx-auto">
                                         Don't have an account?
-                                        <a href="{{url('user/register')}}" class="text-dark font-weight-bold">Register</a>
+                                        <a href="{{ url('user/register') }}"
+                                            class="text-dark font-weight-bold">Register</a>
                                     </p>
                                 </div>
                             </div>
