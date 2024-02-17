@@ -13,9 +13,14 @@ class UserRepository implements UserInterface
     {
         $userQuery=User::query();
         $status=request()->user_status;
+        $userName=request()->user_name;
+
         // dd($status);
         if($status){
             $userQuery->where('user_status',$status);
+        }
+        if($userName){
+            $userQuery->where('name','LIKE',$userName);
         }
         $users=$userQuery->paginate(20);
         return $users;

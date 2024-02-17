@@ -70,7 +70,19 @@
                             autocomplete="off">
                         <a href="{{url('superAdmin/users?user_status=superAdmin_approved_user')}}" class="btn btn-white px-3 mb-0" for="btnradiotable3">SuperAdmin Approved Member</a>
                         </div>
-                        <div class="input-group w-sm-25 ms-auto">
+                        <form action="" class="input-group w-sm-25 ms-auto" method="GET">
+                            <span class="input-group-text text-body">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z">
+                                    </path>
+                                </svg>
+                            </span>
+                            <input type="text" name="user_name" class="form-control" >
+                            <button type="submit" class="border-0  text-sm">Search</button>
+                        </form>
+                        {{-- <div class="input-group w-sm-25 ms-auto">
                             <span class="input-group-text text-body">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="none"
                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -80,7 +92,8 @@
                                 </svg>
                             </span>
                             <input type="text" class="form-control" placeholder="Search">
-                        </div>
+                            <button class="btn btn-dark me-2" type="button">Button</button>
+                        </div> --}}
                     </div>
                     <div class="table-responsive p-0">
                         <table class="table align-items-center mb-0">
